@@ -17,6 +17,89 @@
 
 \tableofcontents
 
+\clearpage
+
+\section{General}
+
+\subsection{Taylor Series}
+
+One-dimensional Taylor-Series Expansion for a n+1 continously differentiable
+function on the the interval a to b with a $\xi \in [x, x+h]$
+\begin{equation}
+    f(x+h) = \sum_k^n \frac{1}{k!} f^{(k)}(x)h^k + \frac{1}{(n+1)!}
+    f^{(n+1)}(\xi)h^{n+1}
+\end{equation}
+
+\subsection{Implicit Function Theorem}
+
+\subsection{Total Derivative}
+
+\subsection{Gershgorin Disks}
+
+Gershgorin disks give an estimate to where eigenvalues of a matrix lie in the
+complex plain. Assume $A \in \mathbb{C}^{n x n}$
+\begin{equation}
+    R_i := \left\{z \in{} \mathbb{C} |
+    |z - a_{ii}| \leq{} \sum_{\substack{j=1 \\ j\neq{} i}}^{n}|a_{ij}| \right\}
+\end{equation}
+The the set of z (=R) describe the Gershgorin disks in which the eigenvalue can
+be found
+
+%%% ---------------------
+
+\section{Polynomials}
+
+\subsection{Monomial Basis}
+
+\begin{equation}
+    span\{1, x, x^2, x^3, ..., x^n\} = \Pi_n
+\end{equation}
+
+\subsection{Lagrange Polynomials}
+
+On a set of points $t_i$ these polynomials are zero at $k \neq j$ and 1 at $k =
+i$
+\begin{equation}
+    L_k(t) := \prod_{\substack{i=0 \\ i\neq j}}^{n} \frac{t - t_i}{t_k - t_i}
+    \in \Pi_n
+\end{equation}
+
+\subsection{Chebychev Polynomials}
+
+The Chebychev polynomials are directly defined by
+\begin{equation}
+    T_n(x) = \cos(n\arccos(x))
+\end{equation}
+
+Or by a three term recursion (it shares the first two polynomials with the
+common monomial basis)
+\begin{equation}
+    T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x), \quad T_0(x) = 1, \quad T_1(x) = x
+\end{equation}
+
+\subsection{Hermite Polynomials}
+
+Require position and slope at each point. Can be used for Hermite cubic spline
+interpolation, however then only $C^1$ over the nodes
+
+\subsection{Legendre Polynomials}
+
+The Legendre Polynomials form a basis of the space of polynomials and are
+directly defined by
+\begin{equation}
+    P_n(x) = \frac{1}{2^n n!} \dv[n]{}{x}[(x^2 - 1)^n]
+\end{equation}
+
+The recursive definition is given by
+\begin{equation}
+    (n+1)P_{n+1}(x) = (2n+1)xP_n(x) - n P_{n-1}(x), \quad P_0 = 1, \quad P_1=x
+\end{equation}
+
+
+%%% ----------------------------------
+
+\section{Error Analysis}
+
 General Relative condition nuumber for $\mathbf{f}:\mathbb{R}^n -> \mathbb{R}^m$ if the
 peturbed input $\mathbf{\tilde{x}}$ approaches the non-perturbed
 \begin{equation}
@@ -41,6 +124,7 @@ define an appropriate matrix norm.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{basicOperations.png}
+    \caption{Overview of relative condition number of basic operations.}
 \end{figure}
 
 Relative condition number of a multi-variant problem with one-dimensional output
@@ -62,17 +146,12 @@ norm)
 
 \
 
-Rule of thumb for the loss of digits of accuracy
+\subsection{Loss of significant digits}
+
 \begin{equation}
     \text{loss} = log_{10}(\kappa_{rel})
 \end{equation}
 
-One-dimensional Taylor-Series Expansion for a n+1 continously differentiable
-function on the the interval a to b with a $\xi \in [x, x+h]$
-\begin{equation}
-    f(x+h) = \sum_k^n \frac{1}{k!} f^{(k)}(x)h^k + \frac{1}{(n+1)!}
-    f^{(n+1)}(\xi)h^{n+1}
-\end{equation}
 
 \section{Matrix Factorization}
 
@@ -96,7 +175,12 @@ Householder transformations are unitary and hermitian.
 
 \section{Polynomial Interpolation}
 
-\subsection{Aitken-Neville Algorithm}
+\subsection{Direct - Barycentric Lagrange Interpolation}
+
+
+Better stability properties than regular Lagrangian interpolation.
+
+\subsection{Recursive - Aitken-Neville Algorithm}
 
 Polynomial interpolation with Aitken-Neville of a set of $n+1$ data points to
 interpolate a polynomial of degree $n$ in the form $P(x) = p_{0,n}(x)$. Start by
@@ -120,7 +204,7 @@ interpolates all value pairs as follows
     P(t) = N(t) + \frac{t - t_k}{t_k - t_i} (N(t) - M(t))
 \end{equation}
 
-\subsection{Newton Algorithm}
+\subsection{Recursive - Newton Algorithm}
 
 Newton's Method provides a nice evalutation of a polynomial interpolation at
 many points since it easily gives you the functional form of the interpolating
@@ -138,6 +222,8 @@ Then the polynomial is defined as
     P(t) = \sum_{k=0}^{n} f[t_0, ..., t_k] \prod_{i=0}^{k-1}(t - t_i)
 \end{equation}
 
+\subsection{Horner's scheme for efficient evaluation}
+
 Using Horner's scheme, the polynomial can be evaluated more efficiently
 \begin{verbatim}
     P_n := f[t_0, t_1, ..., t_n]
@@ -145,18 +231,9 @@ Using Horner's scheme, the polynomial can be evaluated more efficiently
         P_k := P_{k+1} * (t - t_k) + f[t_0, t_1, ..., t_k]
 \end{verbatim}
 
-\hrulefill
 
-The Chebychev polynomials are directly defined by
-\begin{equation}
-    T_n(x) = \cos(n\arccos(x))
-\end{equation}
 
-Or by a three term recursion (it shares the first two polynomials with the
-common monomial basis)
-\begin{equation}
-    T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x), \quad T_0(x) = 1, \quad T_1(x) = x
-\end{equation}
+\subsection{Chebychev nodal support for converging interpolation}
 
 Chebychev nodes on an interval from $(a,b)$. $n$ nodes with index $k$. They are
 the roots of the Chebychev polynomial of degree n.
@@ -164,11 +241,7 @@ the roots of the Chebychev polynomial of degree n.
     x_k = \frac{1}{2}(a+b) + \frac{1}{2}(b-a)\cos(\frac{2k-1}{2n}\pi)
 \end{equation}
 
-\hrulefill
-
-Hermite Polynomials
-
-\hrulefill
+\subsection{Cubic Splines}
 
 For efficient evaluation of cubic splines, use a different basis instead of the
 standard monomial one (where we would have to solve for all 4 coefficients on
@@ -246,44 +319,24 @@ By this we can conclude that that the splines converge against the function they
 are interpolating for increasingly finer subintervals. For Polynomials this is
 not given (only on Chebychev nodes).
 
-\hrulefill
+\subsection{Cost of interpolation}
 
-Gershgorin disks give an estimate to where eigenvalues of a matrix lie in the
-complex plain. Assume $A \in \mathbb{C}^{n x n}$
-\begin{equation}
-    R_i := \left\{z \in{} \mathbb{C} |
-    |z - a_{ii}| \leq{} \sum_{\substack{j=1 \\ j\neq{} i}}^{n}|a_{ij}| \right\}
-\end{equation}
-The the set of z (=R) describe the Gershgorin disks in which the eigenvalue can
-be found
+\begin{itemize}
+    \item Barycentric Lagrange: Computing weights $\propto n^2$, adding value
+        $\propto n$, evaluating polynomial $\propto n$
+    
+\end{itemize}
 
-\hrulefill
 
-The Legendre Polynomials form a basis of the space of polynomials and are
-directly defined by
-\begin{equation}
-    P_n(x) = \frac{1}{2^n n!} \dv[n]{}{x}[(x^2 - 1)^n]
-\end{equation}
+%%% ------
+\section{Trigonometric Interpolation}
 
-The recursive definition is given by
-\begin{equation}
-    (n+1)P_{n+1}(x) = (2n+1)xP_n(x) - n P_{n-1}(x), \quad P_0 = 1, \quad P_1=x
-\end{equation}
+\subsection{Discrete Fourier Transform (DFT)}
 
-\hrulefill
+\subsection{Fast Fourier Transform (FFT)}
 
-Eigenvalues should numerically never be determined by the roots of the
-characteristic polynomial. Instead use other algorithms like (inverse) power
-iteration or the QR algorithm. Then the condition number of finding an
-eigenvalue is given as
 
-\begin{equation}
-    \kappa(\lambda) = ||\mathbf{V}||\cdot||\mathbf{V}^{-1}||
-\end{equation}
-With the eigenvector matrix $\mathbf{V}$. If the matrix $\mathbf{A}$ is normal,
-i.e. $\mathbf{AA}^H = \mathbf{A}^H \mathbf{A}$, then $\mathbf{V}$ is unitary and
-the problem is perfectly conditioned.
-
+%%% --------------------
 \section{Quadrature - Numerical Integration}
 
 \subsection{Newton-Cotes-Methods}
@@ -291,6 +344,7 @@ the problem is perfectly conditioned.
 Newton-Cotes type quadrature interpolates the integrand by the help of
 polynomials on an equidistant grid. Composite rules define their sub-interval
 length to $\frac{b-a}{n}$ with n sub-intervals.
+
 
 \begin{table}[H]
     \centering
@@ -339,4 +393,18 @@ length to $\frac{b-a}{n}$ with n sub-intervals.
 
 
 
+%%% --------------
+\section{Eigenvalues}
+
+Eigenvalues should numerically never be determined by the roots of the
+characteristic polynomial. Instead use other algorithms like (inverse) power
+iteration or the QR algorithm. Then the condition number of finding an
+eigenvalue is given as
+
+\begin{equation}
+    \kappa(\lambda) = ||\mathbf{V}||\cdot||\mathbf{V}^{-1}||
+\end{equation}
+With the eigenvector matrix $\mathbf{V}$. If the matrix $\mathbf{A}$ is normal,
+i.e. $\mathbf{AA}^H = \mathbf{A}^H \mathbf{A}$, then $\mathbf{V}$ is unitary and
+the problem is perfectly conditioned.
 \end{document}
