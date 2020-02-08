@@ -30,9 +30,43 @@ function on the the interval a to b with a $\xi \in [x, x+h]$
     f^{(n+1)}(\xi)h^{n+1}
 \end{equation}
 
+\subsection{Total Derivative}
+
+First order
+\begin{equation}
+    \mathrm{d}f(x_1, x_2, ..., x_n) = \sum_{i=1}^n \pdv{f(\mathbf{x})}{x_i}
+    \mathrm{d} x_i
+\end{equation}
+
+Second Order
+\begin{equation}
+    \mathrm{d}^2f = \mathrm{d}(\mathrm{d}f) = ... = \pdv[2]{f}{x} \mathrm{d}x^2 +
+    2 \pdv[2]{f}{x}{y} \mathrm{d}x\mathrm{d}y + \pdv[2]{f}{y} \mathrm{d}y^2
+\end{equation}
+
 \subsection{Implicit Function Theorem}
 
-\subsection{Total Derivative}
+States whether an implicitly given function $F(x, y) = 0$ can be expressed by an
+explicit relation between its arguments $y = y(x)$.
+
+In higher dimensions: Let $\vec{F}: U \times V \to \mathbb{R}^n, \quad U
+\subseteq \mathbb{R}^m, \quad V \subseteq \mathbb{R}^n$.
+
+In one dimensions with a two-dimensional input: Let $g(x, y) = 0$ be an
+implicitly given function. Since $g$ is zero on the entire input set its (total)
+derivative at every function point must also be zero. This can then be
+rearranged to get the info of the derivative of the explicit functions with
+respect to the other variable
+\begin{equation}
+    y^{'}(x, y) = - \frac{\pdv{g(x, y)}{x}}{\pdv{g(x, y)}{y}}, \quad
+    x^{'}(x, y) = - \frac{\pdv{g(x, y)}{y}}{\pdv{g(x, y)}{x}}
+\end{equation}
+So at a given point $(x_0, y_0)$ that satisfies the implicit equation $g(x_0,
+y_0)$ (use e.g. root finding methods to get such a value pair) we can also
+easily get the values of the derivatives of $x$ and $y$. This can then be useful
+to approximately rebuild the explicit function by the means of a Taylor
+expansion.
+
 
 \subsection{Gershgorin Disks}
 
@@ -44,6 +78,21 @@ complex plain. Assume $A \in \mathbb{C}^{n x n}$
 \end{equation}
 The the set of z (=R) describe the Gershgorin disks in which the eigenvalue can
 be found
+
+\subsection{Matrix Properties}
+
+\begin{itemize}
+    \item Normal Matrices commute with their hermitian $\mathbf{AA}^T =
+        \mathbf{A}^T \mathbf{A}$, every hermitian and every unitary matrix is
+        normal
+    \item 
+\end{itemize}
+
+\subsection{Determinant of a square matrix}
+
+\begin{equation}
+    det(\mathbf{A}) := \sum_{j=1}^{n} (-1)^{j+1} a_{j1} det(\mathbf{A}_{j1})
+\end{equation}
 
 %%% ---------------------
 
@@ -155,6 +204,10 @@ norm)
 
 \section{Matrix Factorization}
 
+\subsection{LU Decomposition with Gauss-Jordan/Dolittle Algorithm}
+
+Influence of Pivoting:
+
 \subsection{QR Decompostion with Householder transformations}
 
 Householder transformations are unitary and hermitian.
@@ -163,6 +216,45 @@ Householder transformations are unitary and hermitian.
     \mathbf{T}^{-1} = \mathbf{T}^H = \mathbf{T} = I_n - 2
     \frac{\vec{u}\vec{u}^H}{\vec{u}^H\vec{u}} \in \mathbb{C}^{n x n}
 \end{equation}
+
+\subsection{QR Decomposition with Givens Rotations}
+
+Givens rotations are orthogonal and independent on the sign of the
+rotation $\mathbf{R}(i,j,\phi)^{-1} = \mathbf{R}(i,j, -\phi) = \mathbf{R}(i,j,
+\phi)^{T}$. They differ only in 4 elements from the identity matrix
+$\mathbf{I}_n$. Assume you want to rotate the $a_{ij}$ element of matrix
+$\mathbf{A}$ to zero. Then:
+
+\begin{equation}
+    r = sgn(a_{jj}) \sqrt{a_{jj}^2 + a_{ij}^2}
+\end{equation}
+
+Whereas $a_{jj}$ is the diagonal element in the column where we want to rotate
+the element and $a_{ij}$ is the element we want to rotate to zero. Then we get
+the values of cosine and sine (They never have to be calculated explicitly!)
+
+\begin{equation}
+    c = \frac{a_{jj}}{r}
+\end{equation}
+
+\begin{equation}
+    s = \frac{a_{ij}}{r}
+\end{equation}
+
+Then the Givens rotation matrix is defined as follows:
+
+\begin{equation}
+    \mathbf{G}(i, j) = \mathbf{I}_n, \text{with} \quad
+    G_{jj} = G_{ii} = c, \quad G_{ij} = -s = -G_{ji}
+\end{equation}
+
+To remember: The negative sine is always on a similar position as the element we
+want to rotate.
+
+
+If applied to get a $\mathbf{QR}$ decomposition eleminate the non-zero entries
+below the main-diagonal by going columnwise from left to right and within the
+columns from bottom to top.
 
 \subsection{Cost of Decompositions}
 
