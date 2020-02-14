@@ -30,6 +30,35 @@ function on the the interval a to b with a $\xi \in [x, x+h]$
     f^{(n+1)}(\xi)h^{n+1}
 \end{equation}
 
+\subsection{Euler's Formula}
+
+\begin{equation}
+    e^{ix} = \cos(x) + i\sin(x)
+\end{equation}
+
+\subsection{Trigonometric Identities}
+
+\begin{equation}
+    \sin(u \pm v) = \sin(u) \cos(v) \pm \cos(u) \sin(v)
+\end{equation}
+
+\begin{equation}
+    \cos(u \pm v) = \cos(u) \cos(v) \mp \sin(u) \sin(v)
+\end{equation}
+
+\subsection{L'Hospital's Rule}
+
+Technique to evaluate the limits of indertminate forms.
+
+If $\lim_{x\to c} f(x) = \lim_{x\to c}g(x) = 0$ or $\pm \infty$ and $g'(x) \neq 0
+\forall x \neq c$ then
+
+\begin{equation}
+    \lim_{x\to c} \frac{f(x)}{g(x)} = \lim_{x\to c} \frac{f'(x)}{g'(x)}
+\end{equation}
+
+Can be extended to higher order derivatives.
+
 \subsection{Total Derivative}
 
 First order
@@ -42,6 +71,34 @@ Second Order
 \begin{equation}
     \mathrm{d}^2f = \mathrm{d}(\mathrm{d}f) = ... = \pdv[2]{f}{x} \mathrm{d}x^2 +
     2 \pdv[2]{f}{x}{y} \mathrm{d}x\mathrm{d}y + \pdv[2]{f}{y} \mathrm{d}y^2
+\end{equation}
+
+\subsection{Matrix Norms}
+
+Adhere to the regular norm properties (greater than zero, homogenity, triangular
+inequality)
+
+\begin{equation}
+    ||\mathbf{A}|| > 0, \quad \forall \mathbf{A} \neq \mathbf{0}, \quad
+    (||\mathbf{A}|| = 0 <-> \mathbf{A} = \mathbf{0})
+\end{equation}
+
+\begin{equation}
+    ||\alpha \mathbf{A}|| = |\alpha| ||\mathbf{A}||
+\end{equation}
+
+\begin{equation}
+    ||\mathbf{A} + \mathbf{B}|| \leq ||\mathbf{A}|| + ||\mathbf{B}||
+\end{equation}
+
+Additionaly it can be \textit{sub-multiplicative}, if
+\begin{equation}
+    ||\mathbf{CD}|| \leq ||\mathbf{C}||\cdot ||\mathbf{D}||
+\end{equation}
+
+And \textit{compatible} or \textit{consistent} with a vector norm
+\begin{equation}
+    ||\mathbf{A} \vec{x}|| \leq ||\mathbf{A}|| ||\vec{x}||
 \end{equation}
 
 \subsection{Implicit Function Theorem}
@@ -85,7 +142,11 @@ be found
     \item Normal Matrices commute with their hermitian $\mathbf{AA}^T =
         \mathbf{A}^T \mathbf{A}$, every hermitian and every unitary matrix is
         normal
-    \item 
+    \item Positive definite Matrices follow $\vec{x}^T \mathbf{A} \vec{x} > =0,
+        \forall \vec{x} \in \mathbb{R}^n$
+    \item Positive definite Matrix if hermitian follows Sylvester's Criterion:
+        All the principal minors and the matrix itself must have a positive
+        determinant
 \end{itemize}
 
 \subsection{Determinant of a square matrix}
@@ -93,6 +154,26 @@ be found
 \begin{equation}
     det(\mathbf{A}) := \sum_{j=1}^{n} (-1)^{j+1} a_{j1} det(\mathbf{A}_{j1})
 \end{equation}
+
+\subsection{Determinant of a block matrix by its blocks}
+
+todo
+
+\subsection{Taylor Expansion of Exponential Function}
+
+Also valid matrix exponential
+
+\begin{equation}
+    e^z = \sum_{k=0}^{\infty} \frac{z^k}{k!}
+\end{equation}
+
+\subsection{Sum series}
+
+Interrupted and to infinity geometric series
+
+Leibniz-series error bound cut-off
+
+Adam-Riese series
 
 %%% ---------------------
 
@@ -125,6 +206,9 @@ common monomial basis)
 \begin{equation}
     T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x), \quad T_0(x) = 1, \quad T_1(x) = x
 \end{equation}
+
+MinMax Property: Chebychev polynomials minize the $\infty$-norm (max-norm) on
+the interval $x \in [-1, 1]$.
 
 \subsection{Hermite Polynomials}
 
@@ -193,7 +277,12 @@ norm)
     \kappa_{rel}(A) = ||A|| \cdot ||A^{-1}||
 \end{equation}
 
-\
+Condition number of a single component of $\vec{f}(\vec{x}) : \mathbb{R}^n
+\to \mathbb{R}^m$
+
+\begin{equation}
+    \kappa_{ij} = \frac{x_j}{f_i(\vec{x})} \pdv{f_i(\vec{x})}{x_j}
+\end{equation}
 
 \subsection{Loss of significant digits}
 
@@ -201,6 +290,30 @@ norm)
     \text{loss} = log_{10}(\kappa_{rel})
 \end{equation}
 
+\subsection{Rounding errors in floating point numbers}
+
+Absolute rounding error
+\begin{equation}
+    |fl(r) - r| \leq 0.5 \cdot B^E
+\end{equation}
+
+Relative rounding error
+\begin{equation}
+    \left| \frac{fl(r) - r}{r} \right| \leq \frac{1}{2|M|} \leq \frac{B}{2}
+    B^{-t}, \quad \text{because} |M| \geq B^{t-1}
+\end{equation}
+
+\subsection{Machine Precision}
+
+Defined $\epsilon_0 := \epsilon_t := B^{1-t}$
+
+Then we get an estimate on the rounded value
+\begin{equation}
+    fl(r) = r \cdot (1 + \epsilon), \quad |\epsilon| \leq \frac{\epsilon_0}{2}
+\end{equation}
+
+For the correct rounding we need $t+2$ digits on the computer, if the result has
+to be accurate to $t$ digits.
 
 \section{Matrix Factorization}
 
@@ -267,8 +380,56 @@ columns from bottom to top.
 
 \section{Polynomial Interpolation}
 
+Polynomial Interpolation is unique because the the determinant of the
+Vandermonde matrix
+
+\begin{equation}
+    \det \begin{pmatrix}
+        1 & \dots & t_0^n \\
+        \hdots & & \hdots \\
+        1 & \dots t_n^n
+        \end{pmatrix}
+    =
+    \prod_{i=0}^n \prod{j=i+1}^n (t_j -t_i)
+\end{equation}
+
+is non-zero if nodes are distinct. If not additional information on the
+derivative has to be given.
+
+\subsection{Lagrangian Form}
+
+Calculate the Lagrange Polynomials on the interpolation nodes and then the
+interpolating polynomial is given by
+
+\begin{equation}
+    P_n(t) = \sum_{k=0}^n y_k L_k(t)
+\end{equation}
+
 \subsection{Direct - Barycentric Lagrange Interpolation}
 
+Rewrite the Lagrange Polynomial
+
+\begin{equation}
+    L_k(t) = \omega_{n+1}(t) \frac{w_k}{t-t_k}
+\end{equation}
+
+With the nodal polynomial of degree $n+1$
+
+\begin{equation}
+    \omega_{n+1}(t) := \prod_{i=0}^n (t - t_i)
+\end{equation}
+
+Then the weights can be precomputed
+
+\begin{equation}
+    w_k := \frac{1}{\prod_{k\neq j} (t_k - t_j}
+\end{equation}
+
+And the interpolating polynomial is given by
+
+\begin{equation}
+    P(t) = \omega_{n+1}(t) \sum_{k=0}^n \frac{w_k}{t-t_k} y_k
+\end{equation}
 
 Better stability properties than regular Lagrangian interpolation.
 
@@ -314,6 +475,24 @@ Then the polynomial is defined as
     P(t) = \sum_{k=0}^{n} f[t_0, ..., t_k] \prod_{i=0}^{k-1}(t - t_i)
 \end{equation}
 
+If a derivative is given instead of a point, or an abscissa appears double and
+it therefore has to be given the first derivative. The Newton's divided
+difference becomes accurate to
+
+\begin{equation}
+    f[x_0, \dots, x_k] = \frac{f^{(k)}(x^*)}{k!}, \quad \text{if} x^* := x_0 =
+    \dots = x_k
+\end{equation}
+
+Mind the $k!$ in the denominator (relevant for $k \geq 2$).
+
+If the distance between points is equal (e.g. on an equidistant measurement
+grid) we get
+
+\begin{equation}
+    f[x_0, \dots, x_k] = todo, see wikipedia
+\end{equation}
+
 \subsection{Horner's scheme for efficient evaluation}
 
 Using Horner's scheme, the polynomial can be evaluated more efficiently
@@ -323,6 +502,38 @@ Using Horner's scheme, the polynomial can be evaluated more efficiently
         P_k := P_{k+1} * (t - t_k) + f[t_0, t_1, ..., t_k]
 \end{verbatim}
 
+\subsection{Error in Polynomial Interpolation}
+
+Compare the maximum componentwise error in approximation
+
+\begin{equation}
+    ||P_1 - P_2||_{\infty} = \left|\left| \sum_{k=0}^n y_k L_k - \sum_{k_0}^n
+    \tilde{y}_k K_k \right|\right| =
+    \leq \max_{k=0 \dots n} | y_k - \tilde{y}_k| \cdot \max_{t \in [t_0, t_n]}
+    \left| \sum_{k=0}^n L_k(t) \right|
+\end{equation}
+
+The one can identify the Lebesguq constant for the lower bound of the error on
+equidistant grids
+
+\begin{equation}
+    \Lambda(n) := \max_{t \in [t_0, t_n]} \sum_{k=0}^n L_k(t)
+    \sim \frac{2^{n+1}}{n \ln(n)}
+\end{equation}
+
+This can lead to a definition of the conditioning for interpolation tasks on
+equidistant grids.
+
+For Chebychev grids these values increase way slower.
+
+That means the choice of node placements has an important influence on the
+accuracy of our interpolation. Assume $Q_n$ is the best interpolating
+polynomial (best choice of node placement) and $P_n$ is our interpolating
+polynomial (e.g. equidistant nodes). Then
+
+\begin{equation}
+    ||f - P_n||_{\infty} \leq (1 + \Lambda(n)) \cdot ||f - Q_n||_{\infty}
+\end{equation}
 
 
 \subsection{Chebychev nodal support for converging interpolation}
@@ -403,9 +614,31 @@ can be of following type
 By the help of the Gershgorin Disks we can proof that under a given bounary
 condition the cubic spline is unique.
 
-The erros for the different derivatives are given
+Since we require the function to be interpolated to be $f \in \mathit{C}^4$ we
+can define two upper bounds.
 
-...
+\begin{equation}
+    L := \max_{t \in [a,b]} | f''''(t)|
+\end{equation}
+
+\begin{equation}
+    H := \max_{0 \leq i \leq n-1} h_i
+\end{equation}
+
+Then upper bounds for the error on each subinterval can defined to
+
+\begin{equation}
+    |f - s_3| \leq \frac{7}{64} L \cdot H^2 \cdot h_i^2
+\end{equation}
+\begin{equation}
+    |f' - s_3'| \leq \frac{7}{16} L \cdot H^2 \cdot h_i
+\end{equation}
+\begin{equation}
+    |f'' - s_3''| \leq \frac{7}{8} L \cdot H^2 
+\end{equation}
+\begin{equation}
+    |f''' - s_3'''| \leq 2 \cdot L \cdot H^2 / h_i
+\end{equation}
 
 By this we can conclude that that the splines converge against the function they
 are interpolating for increasingly finer subintervals. For Polynomials this is
@@ -414,18 +647,114 @@ not given (only on Chebychev nodes).
 \subsection{Cost of interpolation}
 
 \begin{itemize}
+    \item Lagrangian interpolation, each evaluation $O(n^2)$ additions and
+        multiplications, adding new pairs requires completely new calculation.
+        Computation can becom numerically unstable
     \item Barycentric Lagrange: Computing weights $\propto n^2$, adding value
         $\propto n$, evaluating polynomial $\propto n$
-    
+    \item Aitken-Neville : Storage only needs $n+1$ dimensional vector
+    \item Newton: todo
+    \item Cubic Splines in alternative form: Calculate the second divided
+        differences, calculate parameters $\lambda_i$ and $\mu_i$, then solve
+        tridiagonal system (can be accomplished by Thomas Algorithm $\sim O(n)$)
 \end{itemize}
 
 
 %%% ------
 \section{Trigonometric Interpolation}
 
+Instead of Polynomial interpolation trigonometric interpolation uses periodic
+functions (e.g. $\sin(x)$ and $\cos(x)$ or $e^{ix}$ in general) to interpolate a
+function on an interal $[a, b]$. The interpolation conditions holds and for the
+actual task one has not to provide a function value for $b$ (i.e. $f(b)$)
+because the function is assumed to be periodic on this interval, so $f(a) =
+f(b)$.
+
+A special case is the trigonometric interpolation with an equidistant spacing
+between the interpolating points on the basic periodic interval $[0, 2\pi]$:
+
+\begin{equation}
+    x_k = \frac{k\cdot 2 \cdot \pi}{n}, \quad \text{with} \; k=0, 1, \dots, n-1
+\end{equation}
+
+Every other interval can be transformed to this interval by a linear
+transformation.
+
+The trigonometric functions make up the basis of the $L_2$ space, i.e.
+
+\begin{equation}
+    L_2 = span \{e^{jx} \}, \quad \text{with} \; j \in \mathbb{Z}
+\end{equation}
+
+One is basically free to choose the $n$ functions to interpolate the values
+with. However, similar to polynomial interpolation choosing only the lowest
+degree ones (in terms of trigonometric interpolation the ones with the lowest
+frequencies) one minimizes the interpolating error. Additionally the
+interpolating coefficients coincide with the values of the discrete Fourier
+Transform.
+
+\subsection{Continous Fourier Transform}
+
+Find the coefficients by 
+
+\begin{equation}
+    c_k := \frac{1}{2\pi} \int_0^{2\pi} f(x) e^{-ikx} \; \mathrm{d} x, \quad k
+    \in \mathbb{Z}
+\end{equation}
+
+Get the Fourier series of f by
+
+\begin{equation}
+    S_f(x) = f(x) = \sum_{-\infty}^{\infty}c_k e^{ikx}
+\end{equation}
+
 \subsection{Discrete Fourier Transform (DFT)}
 
+Discrete Function values are given on equidistant abscissae on $(0, 2\pi)$
+exluding the right boundary of the interval.
+
+The coeffients of the interpolation (these are approximations of the Fourier
+coefficients of the $n$ lowest frequencies) are found by solving the system
+
+\begin{equation}
+    \sum_{j=\lceil -n/2 \rceil}^{\lceil n/2 \rceil} \gamma_j e^{i\cdot j \cdot x_k} = y_k
+\end{equation}
+
+Or in matrix vector notation
+\begin{equation}
+    \mathbf{F} \vec{\gamma} = \vec{y}, \quad \text{with} \; F_{kj} = e^{i\cdot
+    \frac{2\pi}{n} \cdot jk}
+\end{equation}
+
+The matrix $\mathbf{F}$ is perfectly conditioned and almost unitary
+$\mathbf{F}^{-1} = \frac{1}{n} \mathbf{F}^H$. Therefore, in this very special
+case the system can be solved by using the inverse.
+
+The one can assemble the approximate Fourier Series to
+
+\begin{equation}
+    f(x) \approx T_n(x) = \sum_{j=\lceil -n/2 \rceil}^{\lceil n/2 \rceil} \gamma_j e^{i\cdot j}
+\end{equation}
+
+Remarks:
+\begin{itemize}
+    \item When interpolating real values, it holds $\gamma_k =
+        \bar{\gamma_{-k}}$
+    \item When interpolating real values, the interpolating polynomial is also
+        real (transform to it via Euler's Identity)
+\end{itemize}
+
+In case of $n$ being even (this means an uneven distribution of the lowest
+frequncies around $0$), it is arbitrary whether if one chooses $\lceil -n/2
+\rceil$ or $\lceil n/2 \rceil$. Since this is not allowed to have an influence
+on the solution, the contribution by this frequency may only be real.
+
 \subsection{Fast Fourier Transform (FFT)}
+
+Performing the DFT takes $O(n^2)$ operations. This can be reduced by exploiting
+the shape of the matrix. By the help of permuations one can subdivide the matrix
+$\mathbf{F}$ into matrices of half sice, reducing the effort to $O(n\log(n))$
+with the fastest result if $n$ is a power of $2$.
 
 
 %%% --------------------
@@ -483,6 +812,9 @@ length to $\frac{b-a}{n}$ with n sub-intervals.
         tolerance
 \end{itemize}
 
+\subsection{Romberg's Extrapolation Method}
+
+\subsection{Gauss-Legendre Quadrature}
 
 
 %%% --------------
@@ -499,4 +831,136 @@ eigenvalue is given as
 With the eigenvector matrix $\mathbf{V}$. If the matrix $\mathbf{A}$ is normal,
 i.e. $\mathbf{AA}^H = \mathbf{A}^H \mathbf{A}$, then $\mathbf{V}$ is unitary and
 the problem is perfectly conditioned.
+
+\subsection{Power Iteration}
+
+\subsection{Inverse Power Iteration}
+
+\subsection{QR Algorithm}
+
+\subsection{Rayleigh Shift}
+
+\subsection{Wilkinson Shift}
+
+%%%--------------------
+\section{Nonlinear Equations}
+
+\subsection{General}
+Derivation: Take Taylor Series up to constant or linear term and approximate the
+derivatives.
+
+General form:
+
+\begin{equation}
+    x^{[n+1]} = x^{[n]} - \frac{f(x^{[n]}}{q^{[n]}}
+\end{equation}
+
+Whereas the basic methods only differ in their choice or approximation of
+$q^{[n]}$
+
+\subsection{Chord Method}
+
+\begin{equation}
+    q_k = \frac{f(b) - f(a)}{b - a} = const
+\end{equation}
+
+Onstep method, converges with $p=1$
+
+\subsection{Secant Method}
+
+\begin{equation}
+    q_k = \frac{f(x_k) - f(x_{k-1})}{x_k - x_{k-1}}
+\end{equation}
+
+Two-Step Method, converges locally with $p \approx 1.63$.
+
+\subsection{Regula Falsi - False Positive}
+
+Choose the two pairs of the values so that at least one zero of the function is
+between the secant.
+
+Same computational effort as Secant Method but globally convergent with $p=1$
+
+\subsection{Anderson-Björck}
+
+Modification of Regula Falsi, provides an "adaptive" mix between it and secant
+method
+
+In case of simple roots, superlinear and globally converging with $p \approx
+1.7$
+
+Method of Choice in 1D cases.
+
+\subsection{Newton's Method}
+
+\begin{equation}
+    q_k = f'(x_k)
+\end{equation}
+
+Converges locally with $p=2$ for single roots and with $p=2$ for multiple roots.
+
+\subsection{Simplified Newton}
+
+Derivative is calculated once ($p=1$) or recalculated after $n$ iteration steps.
+
+\subsection{Bisection Method}
+
+Consecutively half the search interval (divide and conquer approach) and choose
+that interval in which the sign of the function changes (indicates the root is
+in that interval).
+
+Simple, extremely stable and globlly convergent (worse than linear)
+
+Method of choice for multple roots, e.g. rough estimate by Newton or
+Anderson-Björck and then further refinement with Bisection.
+
+\subsection{Fixed-Point Methods}
+
+The presented iterative methods for root-finding form a subset of Fixed-Point
+Methods (ODE Methods, Eigenvalue methods etc. can also be categorized in this
+regard, but difficult to analyze).
+
+Fixed point defined
+
+\begin{equation}
+    \lim_{k \to \infty} x_k = x^*, \quad \Phi(x^*) = x^*
+\end{equation}
+
+The Method is called contractive if it reduces the distance between two points
+in the subset it operates on
+
+\begin{equation}
+    |\Phi(x) - \Phi(y) | \leq L \cdot | x - y |, \quad \forall x, y \in [a, b]
+\end{equation}
+
+With a Lipschitz-Constant that has to be $L<1$ for convergence.
+
+If the the iteration $\Phi(x)$ is differentiable (!!! Important, no analysis for
+non-differential functions possible, errors not bounded), then
+
+\begin{equation}
+    L \geq \left| \frac{\Phi(x) - \Phi(y)}{x - y} \right| = \Phi'(z), \quad
+    \forall z \in [a,b]
+\end{equation}
+
+\subsection{Order of Convergence for Contractive Fixed-Point Methods}
+
+$\Phi$ converges (locally) to $x^*$ with order $p \geq 1 $, if for $\epsilon > 0
+$ properly chosen
+
+\begin{equation}
+    \exists C > 0 : |\Phi(x) - x^*| \leq C |x - x^*|^p, \quad \forall x \in [x^*
+    - \epsilon, x^* + \epsilon]
+\end{equation}
+
+and $C < 1$ in case of linear ($q = 1$).
+
+In other words: The distance to the fixed-point has to be reduced for in every
+iteration
+
+!!! The order of convergence is equal to the order of the first non-vanishing
+derivative of $\Phi$
+
+\subsection{Fixed Point Theorem}
+
 \end{document}
