@@ -11,6 +11,7 @@
 \usepackage{tabulary}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{hyperref}
 
 
 \begin{document}
@@ -228,10 +229,27 @@ The recursive definition is given by
     (n+1)P_{n+1}(x) = (2n+1)xP_n(x) - n P_{n-1}(x), \quad P_0 = 1, \quad P_1=x
 \end{equation}
 
+\subsection{Bernoulli Polynomials}
+
+Form a basis of $\Pi_n$.
+With $ b_0(x) := 1$ recursively defined as
+\begin{equation}
+    b_k'(x) = b_{k-1}(x) \quad \text{and} \quad \int_0^1 b_k(x) \, \mathrm{d}x = 0
+\end{equation}
+
+The first three read
+\begin{equation}
+    b_0(x) = 1, \quad b_1(x)=x - 1/2, \quad x^2/2 - x/2 + 1/12
+\end{equation}
+
+The integral fixes the integration constant.
+
 
 %%% ----------------------------------
 
 \section{Error Analysis}
+
+\subsection{Condition Number}
 
 General Relative condition nuumber for $\mathbf{f}:\mathbb{R}^n -> \mathbb{R}^m$ if the
 peturbed input $\mathbf{\tilde{x}}$ approaches the non-perturbed
@@ -315,7 +333,43 @@ Then we get an estimate on the rounded value
 For the correct rounding we need $t+2$ digits on the computer, if the result has
 to be accurate to $t$ digits.
 
+\subsection{Unique solution to a perturbed linear system}
+
+Only guaranteed if the absolute error is bounded
+\begin{equation}
+    ||\delta \mathbf{A} || < \frac{1}{||\mathbf{A}^{-1}||}
+\end{equation}
+
+\subsection{Forward stability}
+Algorithm is forward stable if it introduces errors that are in a similar order
+of magnitude as the unavoidable error due to the condition number. If the
+algorithm consists of sub-algorithms the following estimate holds:
+\begin{equation}
+    \sigma_f \kappa_{rel}(f, x) \leq \sigma_g \kappa_{rel}(g, h(x)) + \sigma_h
+    \kappa_{rel}(g, h(x)) \kappa_{rel}(h, x)
+\end{equation}
+
+\subsection{Backward Stability}
+Set the disturbed output of our imperfect algorithm subject to unperturbed input
+to be the output of a perfect algorithm of perturbed input data.
+\begin{equation}
+    \tilde{f}(x) = \hat{y} \quad \to \quad f(\hat{x}) = y
+\end{equation}
+If one can find an expression for $\hat{x}$ (i.e. how a perfect algorithm would
+map this perturbed data to the correct output), this can be uses as a stability
+estimator. If the backward error is bounded in a similar order of magnitude as
+the condition the algorithm is called backward stable.
+
+Backwards stability is a stronger attribute but more difficult to analyze. If an
+algorithm is backward stable, it is also forward stable. The reverse is not
+necessarily true.
+
+%--------------------
+
 \section{Matrix Factorization}
+
+QR decomposition is unique aside from a sign.
+LU decomposition is not unique and hardly depends on the pivoting strategy.
 
 \subsection{LU Decomposition with Gauss-Jordan/Dolittle Algorithm}
 
@@ -813,6 +867,53 @@ length to $\frac{b-a}{n}$ with n sub-intervals.
 \end{itemize}
 
 \subsection{Romberg's Extrapolation Method}
+Let $T(h)$ denote the composite trapezoidal approximation of an integral with
+$n$ subintervals each of length $h$. Then the error according to
+\emph{Euler-Maclaurin} reads
+\begin{equation}
+    R(h) = \sum_{k=1}^{n+1} b_{2k}(0)h^{2k} \cdot f^{(2k -1)}(x)
+    \bigg|_{x=a}^{x=b} - h^{2n+2} \int_a^b b_{2n+2}(\frac{x-x_i}{h})
+    f^{(2n+2)}(x) \, \mathrm{d} x
+\end{equation}
+
+According to this the error expands in $h^2$. 
+
+\begin{equation}
+    R(h) = c_1 h^2 + c_2 h^4 + c_3 h^6 + \dots + c_m h^{2m} +
+    \alpha_{m+1}(h)h^{2m+2}
+\end{equation}
+
+We know that we have the true
+solution of the integral for an infinitely small sub-interval width $h$.
+Therefore, we can expand the function $T(h)$ in terms of $h^2$ and make an
+extrapolation at $h=0$.
+
+Then, with the help of the Aitken-Algorithmi ($R_{i,i} = T(h_i)$), Romberg's
+method reads
+\begin{equation}
+    R_{i,k} = \frac{h_k^2}{h_k^2 - h_i^2}R_{i, k-1} - \frac{h_i^2}{h_k^2 -
+    h_i^2} r_{i+1, k}
+\end{equation}
+
+In the case of the Romberg sequence of sub-interval length (halfing each time),
+we get
+\begin{equation}
+    R_{i, k} = \frac{4^{-k}}{4^{-k} - 4^{-i}} R_{i, k-1} - \frac{4^{-i}}{4^{-k}
+    - 4^{-i}} R_{i+1, k}
+\end{equation}
+
+The error estimator is given as
+\begin{equation}
+    R_n = O(\prod_{i=0}^{n-1} h_i^2)
+\end{equation}
+
+One can derive the Trapezoidal-Rule and the 3/8 Rule with the help of Romberg
+but with a worse error estimator.
+
+Mind that Richardson's idea is not applicable to periodic functions integrated
+over one period, since the error expansion term vanish. Outcome: split up
+quadrature interval into two !unequally long intervals! and apply Romberg on
+them.
 
 \subsection{Gauss-Legendre Quadrature}
 
@@ -834,9 +935,63 @@ the problem is perfectly conditioned.
 
 \subsection{Power Iteration}
 
+Choose an arbitrary vector $\vec{q}_0$. Then perform one iteration
+
+\begin{equation}
+    \vec{q}_{i+1} = \vec{q}_i^H \mathbf{A} \vec{q}_i
+\end{equation}
+
+Normalization ensures that no overflow occurs.
+The approximation to the biggest eigenvalue is given by the Rayleigh Quotient
+
+\begin{equation}
+    \mu_i = \frac{\vec{q}_i^H \mathbf{A} \vec{q}_i}{\vec{q}_i^H \vec{q}_i}
+\end{equation}
+
+Converges against the greatest eigenvalue. $\vec{q}$ is a bad approximation of
+the corresponding eigenvector.
+
+Converging if, greatest eigenvalue is distinct or appears multiple times. 
+If greatest eigenvalue also has its negative or is the complex conjugate, no
+convergence.
+Convergence is faster, the smaller the ratio $|\lambda_i/\lambda_1|$.
+
+Define residual
+\begin{equation}
+    \vec{r}_i = \mathbf{A}\vec{q}_i - \mu_i \vec{q}_i
+\end{equation}
+
+Stopping criterion
+\begin{equation}
+    \frac{||\vec{r}_i||}{|\mu_i| \cdot ||\vec{q}_i||} \leq \sigma \epsilon_0
+\end{equation}
+
 \subsection{Inverse Power Iteration}
 
+Choose arbitrary vector $\vec{q}_0$ and initial guess $\sigma_0$ (for example by
+one step of a regualr power iteration.
+
+Then perform one iteration
+\begin{equation}
+    (\mathbf{A} - \mu \mathbf{I})\vec{q}_{i} = \vec{q}_{i-1}
+\end{equation}
+
+Approximation to the eigenvalue is given by the Rayleigh Quotient. Converges
+against eigenvalue closest to guess $\mu$. $\vec{q}$ converges quite well
+against the corresponding eigenvector.
+
+Costs $O(n^2)$ flop per step when LU decomposition of shifted matrix is saved.
+
 \subsection{QR Algorithm}
+
+First preconditioning, transform general matrix into upper Hessenberg form or
+Hermitian matrix into real! tridiagonal form by QR modifications:
+\begin{enumerate}
+    \item Choose a first column and get an Householder so that all entries below
+        the subdiagonal would be zero
+    \item Apply $A \to T^{-1}AT$
+\end{enumerate}
+
 
 \subsection{Rayleigh Shift}
 
