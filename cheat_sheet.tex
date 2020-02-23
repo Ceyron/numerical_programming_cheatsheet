@@ -377,6 +377,13 @@ Influence of Pivoting:
 
 \subsection{QR Decompostion with Householder transformations}
 
+Choose a vector by
+
+\begin{equation}
+    \vec{u} = A[i:, i] + sign(A[i,i]) \cdot norm(A[i:, i]) \cdot \vec{e}_1
+\end{equation}
+
+
 Householder transformations are unitary and hermitian.
 
 \begin{equation}
@@ -992,10 +999,35 @@ Hermitian matrix into real! tridiagonal form by QR modifications:
     \item Apply $A \to T^{-1}AT$
 \end{enumerate}
 
+Then iterator over the following algorithm
+\begin{enumerate}
+    \item $Q_k R_k = R_{k-1}\quad$ Decompose into QR of a previous
+    \item $T_k := R_k Q_k \quad$ Reverse order of multiplication 
+\end{enumerate}
+
+
+\subsection{Shifts}
+
+For QR-Algorithm. 
+\begin{enumerate}
+    \item $Q_k R_k = R_{k-1} - \mu I \quad$ Decompose into QR of a previous
+        matrix minus shift
+    \item $T_k := R_k Q_k + \mu I \quad$ Reverse order of multiplication and add
+        the shift
+\end{enumerate}
 
 \subsection{Rayleigh Shift}
 
+Use bottom right element as shift. Once element in subdiagonal in last row is
+close to zero, deflate the rest of the matrix.
+
+Does not work for complex EWs. 
+
 \subsection{Wilkinson Shift}
+
+Consider the matrix 2x2 block in the bottom right. Analytically calculate the
+eigenvalues and use this eigenvalue as a shift that is the closest to the bottom
+right element
 
 %%%--------------------
 \section{Nonlinear Equations}
@@ -1117,5 +1149,29 @@ iteration
 derivative of $\Phi$
 
 \subsection{Fixed Point Theorem}
+
+If (a) a fixed point method is confined to one interval and (b) contractive
+\begin{equation}
+    x_k \in [a, b], \quad \forall k=0,1,2, \dots
+\end{equation}
+\begin{equation}
+    |\Phi(x) - \Phi(y)| \leq L \cdot |x - y|, \quad \forall x, y \in [a, b]
+    \quad \text{with} L<1
+\end{equation}
+
+Then the following holds:
+\begin{enumerate}
+    \item The fixed point exists in the limit in the interval $[a, b]$
+    \item it is the only fixed point in the interval
+    \item the fixed point method converges at least linearly
+\end{enumerate}
+
+Additionally some insights on the distance to the fixed point,
+\begin{equation}
+    |x_k - x*| \leq L^k |x_0 - x*|
+\end{equation}
+\begin{equation}
+    |x_k - x* | \leq \frac{L^k}{1-L}|x_0 - x_1|
+\end{equation}
 
 \end{document}
